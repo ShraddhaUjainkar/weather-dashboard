@@ -17,8 +17,8 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import dayjs from 'dayjs';
+import { fetchAstronomyData } from '@/services/whetherServices';
 
 export default {
     name: 'AlertCard',
@@ -30,8 +30,7 @@ export default {
 
         const fetchAlerts = async () => {
             try {
-                const response = await axios.get(`http://api.weatherapi.com/v1/astronomy.json?key=67c8a743cc3f42f7a6675201242609&q=india&dt=${todayDate}`);
-                astronomy.value = response.data || []; 
+                astronomy.value = await fetchAstronomyData(); 
             } catch (error) {
                 console.error('Error fetching alerts:', error);
             }

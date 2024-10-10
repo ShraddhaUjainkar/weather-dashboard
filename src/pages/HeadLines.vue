@@ -24,7 +24,8 @@
   
 <script>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { fetchAlertData } from '@/services/whetherServices';
+
 
 export default {
     name: 'HeadLines',
@@ -42,9 +43,7 @@ export default {
 
         const fetchAlerts = async () => {
             try {
-                const response = await axios.get('http://api.weatherapi.com/v1/forecast.json?key=67c8a743cc3f42f7a6675201242609&q=india&days=1&aqi=no&alerts=yes');
-                alerts.value = response.data.alerts.alert || [];    
-                console.log( alerts.value)
+                alerts.value = await fetchAlertData();
             } catch (error) {
                 console.error('Error fetching alerts:', error);
             }

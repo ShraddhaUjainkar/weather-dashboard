@@ -18,7 +18,7 @@
   
 <script>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { fetchSportData } from '@/services/whetherServices';
 
 export default {
     name: 'SportsNews',
@@ -27,9 +27,7 @@ export default {
 
         const fetchSportsNews = async () => {
             try {
-                const response = await axios.get('http://api.weatherapi.com/v1/sports.json?key=67c8a743cc3f42f7a6675201242609&q=London');
-                sportsNews.value = response.data.football || [];
-                console.log(sportsNews.value.football)
+                sportsNews.value = await fetchSportData();
             } catch (error) {
                 console.error('Error fetching sports news:', error);
             }

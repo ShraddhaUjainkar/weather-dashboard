@@ -1,6 +1,6 @@
 <template>
     <div v-if="weather" class="weather-card">
-        <h2 data-aos="slide-up" >Weather in {{ weather.location.name }}, {{ weather.location.country }}</h2>
+        <h2 data-aos="slide-up">Weather in {{ weather.location.name }}, {{ weather.location.country }}</h2>
         <p><strong>Temperature:</strong> {{ weather.current.temp_c }} °C</p>
         <p><strong>Condition:</strong> {{ weather.current.condition.text }}</p>
         <img :src="weather.current.condition.icon" alt="Weather Icon" />
@@ -11,30 +11,27 @@
         <p>Loading weather data...</p>
     </div>
 </template>
-  
+
 <script>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { fetchWeather } from '../services/whetherServices';
 
 export default {
     name: 'WeatherCard',
     setup() {
         const weather = ref(null);
 
-        const fetchWeather = async () => {
+        const getWeatherData = async () => {
             try {
-                const response = await axios.get(
-                    'http://api.weatherapi.com/v1/current.json?key=67c8a743cc3f42f7a6675201242609&q=india&aqi=no'
-                );
-                weather.value = response.data;
-                console.log(response);
+                const data = await fetchWeather('india');
+                weather.value = data;
             } catch (error) {
                 console.error('Error fetching weather data:', error);
             }
         };
 
         onMounted(() => {
-            fetchWeather();
+            getWeatherData();
         });
 
         return {
@@ -43,7 +40,7 @@ export default {
     },
 };
 </script>
-  
+
 <style scoped>
 .weather-card {
     border-radius: 8px;
@@ -61,4 +58,3 @@ export default {
     margin: 8px 0;
 }
 </style>
-  
